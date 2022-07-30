@@ -2,6 +2,7 @@ let inputDateInicial
 let inputDateFinal
 let InputCurrentDate
 let nome = []
+let viewState
 const pje2x1g = 'https://pje1g.trf5.jus.br/pje/Painel/painel_usuario/advogado.seam'
 const input = document.querySelector("#_viewRoot\\:status\\.start")
 const state = {
@@ -9,6 +10,7 @@ const state = {
 }
 
 async function ajax(payload) {
+    console.log(payload)
     return new Promise(
         (resolve, reject) => {
             // uso da API para fornecer acesso a realizar requests ao servidor
@@ -23,7 +25,8 @@ async function ajax(payload) {
                 // preenchimento do resultado no HTML
                 let parser = new DOMParser()
                 let doc = parser.parseFromString(response,'text/html')
-                    resolve(doc)
+                console.log(doc)
+                resolve(doc)
                 }
 
                 // Responsável por tratar o retorno que não for bem sucedido
@@ -46,14 +49,9 @@ async function ajax(payload) {
 
 async function requestSend(page) {
     try {
-        const abas = document.querySelectorAll("#formExpedientes\\:tbExpedientes\\:scPendentes_table > tbody > tr > tb")
+        const payload = `AJAXREQUEST=conteudoAbaExpedientes&formExpedientes%3AnumeroProcesso%3AnumeroSequencial=&formExpedientes%3AnumeroProcesso%3AnumeroDigitoVerificador=&formExpedientes%3AnumeroProcesso%3AAno=&formExpedientes%3AnumeroProcesso%3AramoJustica=&formExpedientes%3AnumeroProcesso%3ArespectivoTribunal=&formExpedientes%3AnumeroProcesso%3ANumeroOrgaoJustica=&formExpedientes%3AitNE=&formExpedientes%3AitCL=&formExpedientes%3AitAS=&formExpedientes%3Aj_id455InputDate=${inputDateInicial}&formExpedientes%3Aj_id455InputCurrentDate=${InputCurrentDate}&formExpedientes%3Aj_id457InputDate=${inputDateFinal}&formExpedientes%3Aj_id457InputCurrentDate=${InputCurrentDate}&formExpedientes%3AitDestPend=&formExpedientes%3AitIMF=&formExpedientes%3AitOAB=&formExpedientes%3AsoOrd=org.jboss.seam.ui.NoSelectionConverter.noSelectionValue&formExpedientes%3AitPR=org.jboss.seam.ui.NoSelectionConverter.noSelectionValue&${nome[0]}=${nome[0]}&autoScroll=&${nome[1]}=&${nome[2]}=&javax.faces.ViewState=${viewState}&javax.faces.ViewState=${viewState}&formExpedientes=formExpedientes&formExpedientes%3AtbExpedientes%3AscPendentes=${page}&ajaxSingle=formExpedientes%3AtbExpedientes%3AscPendentes&AJAX%3AEVENTS_COUNT=1&`
 
-        const payload1 = [`esso%3AnumeroSequencial=&formExpedientes%3AnumeroProcesso%3AnumeroDigitoVerificador=&formExpedientes%3AnumeroProcesso%3AAno=&formExpedientes%3AnumeroProcesso%3AramoJustica=&formExpedientes%3AnumeroProcesso%3ArespectivoTribunal=&formExpedientes%3AnumeroProcesso%3ANumeroOrgaoJustica=&formExpedientes%3AitNE=&formExpedientes%3AitCL=&formExpedientes%3AitAS=&formExpedientes%3Aj_id455InputDate=${inputDateInicial}&formExpedientes%3Aj_id455InputCurrentDate=${InputCurrentDate[0]}%2F${InputCurrentDate[1]}&formExpedientes%3Aj_id457InputDate=${inputDateFinal}&formExpedientes%3Aj_id457InputCurrentDate=${InputCurrentDate[0]}%2F${InputCurrentDate[1]}&formExpedientes%3AitDestPend=&formExpedientes%3AitIMF=&formExpedientes%3AitOAB=&formExpedientes%3AsoOrd=org.jboss.seam.ui.NoSelectionConverter.noSelectionValue&formExpedientes%3AitPR=org.jboss.seam.ui.NoSelectionConverter.noSelectionValue&${nome[0]}=${nome[0]}&autoScroll=&${nome[1]}=&${nome[2]}=&javax.faces.ViewState=j_id3&javax.faces.ViewState=j_id3&formExpedientes=formExpedientes&formExpedientes%3AbtPesq=formExpedientes%3AbtPesq&AJAX%3AEVENTS_COUNT=1&`]
-        const payload2 = `AJAXREQUEST=conteudoAbaExpedientes&formExpedientes%3AnumeroProcesso%3AnumeroSequencial=&formExpedientes%3AnumeroProcesso%3AnumeroDigitoVerificador=&formExpedientes%3AnumeroProcesso%3AAno=&formExpedientes%3AnumeroProcesso%3AramoJustica=&formExpedientes%3AnumeroProcesso%3ArespectivoTribunal=&formExpedientes%3AnumeroProcesso%3ANumeroOrgaoJustica=&formExpedientes%3AitNE=&formExpedientes%3AitCL=&formExpedientes%3AitAS=&formExpedientes%3Aj_id455InputDate=${inputDateInicial}&formExpedientes%3Aj_id455InputCurrentDate=${InputCurrentDate[0]}%2F${InputCurrentDate[1]}&formExpedientes%3Aj_id457InputDate=${inputDateFinal}&formExpedientes%3Aj_id457InputCurrentDate=${InputCurrentDate[0]}%2F${InputCurrentDate[1]}&formExpedientes%3AitDestPend=&formExpedientes%3AitIMF=&formExpedientes%3AitOAB=&formExpedientes%3AsoOrd=org.jboss.seam.ui.NoSelectionConverter.noSelectionValue&formExpedientes%3AitPR=org.jboss.seam.ui.NoSelectionConverter.noSelectionValue&${nome[0]}=${nome[0]}&autoScroll=&${nome[1]}=&${nome[2]}=&javax.faces.ViewState=j_id38&javax.faces.ViewState=j_id38&formExpedientes=formExpedientes&formExpedientes%3AtbExpedientes%3AscPendentes=${page}&ajaxSingle=formExpedientes%3AtbExpedientes%3AscPendentes&AJAX%3AEVENTS_COUNT=1&`
-
-        if (abas.length > 0)
-            return await ajax(payload2)
-        return await ajax(payload1)
+        return await ajax(payload)
     }
     catch (error) {
         console.log(error.message)
@@ -114,13 +112,14 @@ function PDFGen (array) {
 }
 
 function createInputDateAndInsertDates() {
-    inputDateInicial = document.querySelector("#formExpedientes\\:j_id455InputDate")
-    inputDateFinal = document.querySelector("#formExpedientes\\:j_id457InputDate")
-    InputCurrentDate = document.querySelector("#formExpedientes\\:j_id457InputCurrentDate").value.split('/')
+    viewState = document.querySelector("#javax\\.faces\\.ViewState").value
+    inputDateInicial = document.querySelector("#formExpedientes\\:j_id455InputDate").value.replaceAll('/','%2F')
+    inputDateFinal = document.querySelector("#formExpedientes\\:j_id457InputDate").value.replaceAll('/','%2F')
+    InputCurrentDate = document.querySelector("#formExpedientes\\:j_id457InputCurrentDate").value.replaceAll('/','%2F')
     nome.push(document.querySelector('#formExpedientes\\:tbExpedientes\\:tb').children[0].children[3].children[1].children[2].name.replaceAll(':','%3A'))
     nome.push(document.querySelector('#formExpedientes\\:tbExpedientes\\:tb').children[0].children[3].children[1].children[4].name.replaceAll(':','%3A'))
     nome.push(document.querySelector('#formExpedientes\\:tbExpedientes\\:tb').children[0].children[3].children[1].children[5].name.replaceAll(':','%3A'))
-    if (inputDateInicial.value.length == 0 && inputDateFinal.value.length == 0)
+    if (inputDateInicial.length == 0 && inputDateFinal.length == 0)
         return
     if (document.getElementById('gerarPDF') != null)
         return
@@ -142,10 +141,9 @@ function createInputDateAndInsertDates() {
         let params
         let contador = 0
 
-        let buttons = document.querySelectorAll("#formExpedientes\\:tbExpedientes\\:scPendentes_table > tbody > tr > td")
+        const abas = document.querySelectorAll("#formExpedientes\\:tbExpedientes\\:scPendentes_table > tbody > tr > td")
         loader.style.display = 'block'
-        console.log(buttons)
-        if (buttons.length == 0) {
+        if (abas.length == 0) {
             params = document.querySelector("#formExpedientes\\:tbExpedientes\\:tb").children
             for (let index = 0; index < params.length; index++) 
                 intimacoes.push(params[index].children[1])
@@ -175,9 +173,9 @@ function createInputDateAndInsertDates() {
             })
         }
         else {
-                for (let index = 0; index < buttons.length; index++) {
-                    if (buttons[index].className == 'rich-datascr-act' || buttons[index].className == 'rich-datascr-inact') {
-                        params = await requestSend(buttons[index].innerText)
+                for (let index = 0; index < abas.length; index++) {
+                    if (abas[index].className == 'rich-datascr-act' || abas[index].className == 'rich-datascr-inact') {
+                        params = await requestSend(abas[index].innerText)
                         intimacoes.push(params)
                     }
                 }
