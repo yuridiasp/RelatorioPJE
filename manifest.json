@@ -1,0 +1,37 @@
+{
+    "name": "RelatórioPJe PDFGen",
+    "version": "1.0",
+    "icons": {
+        "180": "icon.png"
+    },
+    "background": {
+        "service_work": "background/background.html"
+    },
+    "description": "Aplicação destinada a gerar relatório em pdf das intimaçõe que foram dadas ciência e posteriormente realizar conferência.",
+    "action": {
+        "default_title": "RelatórioPDF",
+        "default_popup": "popup/index.html"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "https://*/pje/*",
+                "https://cdnjs.cloudflare.com/*"
+            ],
+            "js": [
+                "chromeUtils.js",
+                "content.js",
+                "pdfmake.min.js",
+                "vfs_fonts.js"
+            ]
+        }
+    ],
+    "host_permissions":[
+        "https://cdnjs.cloudflare.com/*"
+    ],
+    "permissions": [
+        "tabs",
+        "storage"
+    ],
+    "manifest_version": 3
+}

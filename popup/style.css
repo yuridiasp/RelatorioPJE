@@ -1,0 +1,41 @@
+* {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    list-style-type: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+body {
+    width: 200px;
+    height: 100px;
+    text-align: center;
+    align-items: center;
+    padding: 20px;
+    color: #058ec4,
+}
+
+p {
+    padding-top: 10px;
+}
+
+#mensagem {
+    font-size: 0.8em;
+    padding-bottom: 5px;
+}
+
+.btn-ok {
+    background: crimson;
+    border-radius: 30px;
+    margin: 10px 0;
+    width: 100px;
+    padding: 5px 15px;
+    color: white;
+    font-size: 0.9em;
+}
+
+.btn-ok:hover {
+    background: rgb(117, 10, 32);
+    font-weight: bold;
+}
